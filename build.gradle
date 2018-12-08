@@ -7,13 +7,12 @@ buildscript {
   dependencies {
     classpath "com.google.guava:guava:+"
     classpath "gradle.plugin.com.palantir:jacoco-coverage:0.3.0-dirty"
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+
   }
 }
 
 apply plugin: 'java'
 apply plugin: "com.palantir.jacoco-coverage"
-apply plugin: "org.sonarqube"
 
 repositories {
     mavenCentral()
@@ -26,7 +25,7 @@ dependencies{
 
 jacocoCoverage {
     // Enforce minimum code coverage of 50% for every Java file.
-    fileThreshold  0.2, LINE
+    fileThreshold  0.5, LINE
 
     // Whitelist files named MyClass.java from coverage requirements.
     //fileThreshold 0.0, "Triangle.java"
