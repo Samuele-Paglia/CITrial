@@ -1,10 +1,10 @@
 pipeline {
 	agent {
-        docker {
-            image 'gradle'
-            args '-v /root/.gradle:/root/.gradle'
-        }
-    }
+		docker {
+			image 'gradle'
+			args '-v /root/.gradle:/root/.gradle'
+			}
+	}
 	stages {
 		stage('Build') {
 			steps {

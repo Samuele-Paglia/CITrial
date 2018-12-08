@@ -6,6 +6,7 @@ buildscript {
   }
   dependencies {
     classpath "com.google.guava:guava:+"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
     classpath "gradle.plugin.com.palantir:jacoco-coverage:0.3.0-dirty"
 
   }
@@ -13,6 +14,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: "com.palantir.jacoco-coverage"
+apply plugin: 'org.sonarqube'
 
 repositories {
     mavenCentral()
