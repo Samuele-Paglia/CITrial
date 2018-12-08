@@ -1,9 +1,11 @@
 pipeline {
-	agent {
+	agent ('Gradle') {
 		docker {
 			image 'gradle'
 			args '-v /root/.gradle:/root/.gradle'
-			}
+		}
+	}
+	agent ('Sonarqube') {
 		docker {
 			image 'sonarqube'
 			args '-p 9000:9000 -v sonarqube-data:/opt/sonarqube/data -v sonarqube-extensions:/opt/sonarqube/extensions'
