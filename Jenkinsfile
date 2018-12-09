@@ -1,7 +1,7 @@
 node {
 	try {
-		tools {
-			gradle 'gradle:4.10.3'
+		environment {
+			tool name: 'gradle:4.10.3', type: 'gradle'
 		}
 		/*
     	stage('Checkout SCM'){
