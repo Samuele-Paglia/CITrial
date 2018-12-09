@@ -35,13 +35,13 @@ pipeline {
 	}
 	post {
 		success {
-			slackSend (color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.durationString}")
+			slackSend (color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.duration}")
 		}
 		unstable {
-			slackSend (color: '#FFFF00', message: "UNSTABLE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+			slackSend (color: 'warning', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Unstable after ${currentBuild.duration}")
 		}
 		failure {
-			slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+			slackSend (color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Failure after ${currentBuild.duration}")
 		}
 	}
 }
