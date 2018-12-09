@@ -2,22 +2,16 @@ node {
 	try {
 		def gradle_home = tool name: 'gradle:4.10.3', type: 'gradle'
 		env.PATH = "${gradle_home}/bin:${env.PATH}"
-		/*
-    	stage('Checkout SCM'){
-        	git '/home/samu/GitHub/CITrial'
-    	}
-    	*/
+
     	stage('Checkout SCM'){
     		checkout scm
     	}
 		stage('Build') {
-			tool name: 'gradle:4.10.3', type: 'gradle'
 			sh 'gradle build'
 		}
 		stage('SonarQube Analysis') {
 			withSonarQubeEnv('sonarqube') {
-				tool name: 'gradle:4.10.3', type: 'gradle'
-				sh 'gradle --info sonarqube'
+				sh 'gradle sonarqube'
 			}
 		}
 		stage("Quality Gate") {
@@ -39,7 +33,6 @@ node {
 		notifyBuild("${currentBuild.result}")
 	}
 }
-
 
 def notifyBuild(def buildStatus) {
     buildStatus =  buildStatus ?: 'FAILURE'
