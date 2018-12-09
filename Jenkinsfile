@@ -7,6 +7,9 @@ node {
         	git '/home/samu/GitHub/CITrial'
     	}
     	*/
+    	stage('Checkout SCM'){
+    		checkout scm
+    	}
 		stage('Build') {
 			tool name: 'gradle:4.10.3', type: 'gradle'
 			sh 'gradle build'
@@ -33,20 +36,17 @@ node {
 		currentBuild.result = "FAILURE"
 		throw e
 	} finally {
-		echo "${currentBuild.result}"
 		notifyBuild("${currentBuild.result}")
 	}
 }
 
 
 def notifyBuild(def buildStatus) {
-	echo "${buildStatus}"
     buildStatus =  buildStatus ?: 'FAILURE'
     def colorMap = [ 'SUCCESS': 'good', 'UNSTABLE': 'warning', 'FAILURE': 'danger' ]
     def resultMap = [ 'SUCCESS': 'Success', 'UNSTABLE': 'Unstable', 'FAILURE': 'Failure' ]
 
     def subject = "${env.JOB_NAME} - #${env.BUILD_NUMBER}"
-    echo "${buildStatus}"
     def result = resultMap[buildStatus]
     def summary = "${subject} ${result} after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)"
     def colorName = colorMap[buildStatus]
