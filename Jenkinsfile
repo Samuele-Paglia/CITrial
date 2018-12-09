@@ -9,11 +9,11 @@ node {
     	}
     	*/
 		stage('Build') {
-			sh 'gradle build'
+			sh '${gradle:4.10.3} gradle build'
 		}
 		stage('SonarQube Analysis') {
 			withSonarQubeEnv('sonarqube') {
-				sh 'gradle --info sonarqube'
+				sh '${gradle:4.10.3} gradle --info sonarqube'
 			}
 		}
 		stage("Quality Gate") {
