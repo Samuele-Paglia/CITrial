@@ -1,47 +1,48 @@
-pipeline {
-	agent any
-	// You have to specify gradle as a tool, otherwise it will not be found
-	tools {
-		gradle "gradle:4.10.3"
-	}
-	/*
-	// If you wanna use gradle in a docker container
-	agent ('Gradle') {
-		docker {
-			image 'gradle'
-			args '-v /root/.gradle:/root/.gradle'
-		}s
-	}*/
-	stages {
+node {
+	try {
+		/*
+    	stage('Checkout SCM'){
+        	git '/home/samu/GitHub/CITrial'
+    	}
+    	*/
 		stage('Build') {
-			steps {
-				sh 'gradle build'
-			}
+			sh 'gradle build'
 		}
 		stage('SonarQube Analysis') {
-			steps {
-				withSonarQubeEnv('sonarqube') {
-					sh 'gradle sonarqube'
-				}
+			withSonarQubeEnv('sonarqube') {
+				sh 'gradle --info sonarqube'
 			}
 		}
 		stage("Quality Gate") {
-			steps {
-				timeout(time: 20, unit: 'MINUTES') {
-					waitForQualityGate abortPipeline: true
+			timeout(time: 20, unit: 'MINUTES') {
+				def qg = waitForQualityGate()
+				if (qg.status!='OK' & qg.status!='WARN') {
+					error "Pipeline aborted due to quality gate failure: ${qg.status}"
+				} else if (qg.status=='WARN') {
+					currentBuild.result='UNSTABLE'
+					echo "The ${currentBuild.result} state is due to quality gate result: ${qg.status}"
 				}
 			}
 		}
+	} catch (e) {
+		currentBuild.result = "FAILED"
+		throw e
+	} finally {
+		//notifyBuild(currentBuild.result)
 	}
-	post {
-		success {
-			slackSend (color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)")
-		}
-		unstable {
-			slackSend (color: 'warning', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Unstable after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)")
-		}
-		failure {
-			slackSend (color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Failure after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)")
-		}
-	}
+}
+
+
+def notifyBuild(def buildStatus) {
+    buildStatus =  buildStatus ?: 'FAILURE'
+    env.JOB_DISPLAYNAME = Jenkins.instance.getJob("${env.JOB_NAME}").displayName
+    def colorMap = [ 'SUCCESS': 'good', 'UNSTABLE': 'warning', 'FAILURE': 'danger' ]
+    def resultMap = [ 'SUCCESS': 'Success', 'UNSTABLE': 'Unstable', 'FAILURE': 'Failure' ]
+
+    def subject = "${env.JOB_DISPLAYNAME} - #${env.BUILD_NUMBER}"
+    def result = resultMap[buildStatus]
+    def summary = "${subject} ${result} after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)"
+    def colorName = colorMap[buildStatus]
+
+    slackSend (color: colorName, message: summary)
 }
