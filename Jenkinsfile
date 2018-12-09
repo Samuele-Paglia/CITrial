@@ -1,5 +1,8 @@
 node {
 	try {
+		tools {
+			gradle 'gradle:4.10.3'
+		}
 		/*
     	stage('Checkout SCM'){
         	git '/home/samu/GitHub/CITrial'
