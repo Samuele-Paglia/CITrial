@@ -1,5 +1,7 @@
 node {
 	try {
+		def gradle_home = tool name: 'gradle:4.10.3', type: 'gradle'
+		env.PATH = "${gradle_home}/bin:${env.PATH}"
 		/*
     	stage('Checkout SCM'){
         	git '/home/samu/GitHub/CITrial'
