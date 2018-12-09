@@ -32,8 +32,8 @@ node {
 		currentBuild.result = "FAILED"
 		throw e
 	} finally {
-		echo '${currentBuild.result}'
-		notifyBuild('${currentBuild.result}')
+		echo "${currentBuild.result}"
+		notifyBuild("${currentBuild.result}")
 	}
 }
 
