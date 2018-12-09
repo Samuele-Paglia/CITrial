@@ -1,8 +1,6 @@
 node {
 	try {
-		withEnv {
-			tool name: 'gradle:4.10.3', type: 'gradle'
-		}
+		tool name: 'gradle:4.10.3', type: 'gradle'
 		/*
     	stage('Checkout SCM'){
         	git '/home/samu/GitHub/CITrial'
