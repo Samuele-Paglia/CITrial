@@ -32,6 +32,7 @@ node {
 		currentBuild.result = "FAILED"
 		throw e
 	} finally {
+		echo '${currentBuild.result}'
 		notifyBuild('${currentBuild.result}')
 	}
 }
@@ -43,6 +44,7 @@ def notifyBuild(def buildStatus) {
     def resultMap = [ 'SUCCESS': 'Success', 'UNSTABLE': 'Unstable', 'FAILURE': 'Failure' ]
 
     def subject = "${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+    echo '${buildStatus}'
     def result = resultMap[buildStatus]
     def summary = "${subject} ${result} after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)"
     def colorName = colorMap[buildStatus]
