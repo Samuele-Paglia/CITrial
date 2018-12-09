@@ -35,7 +35,7 @@ pipeline {
 	}
 	post {
 		success {
-			slackSend (color: '#00FF00', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.durationString}")
+			slackSend (color: good, message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.durationString}")
 		}
 		unstable {
 			slackSend (color: '#FFFF00', message: "UNSTABLE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
