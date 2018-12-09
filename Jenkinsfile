@@ -1,9 +1,11 @@
-pipeline {/*
+pipeline {
+	agent any
+	/*
 	agent ('Gradle') {
 		docker {
 			image 'gradle'
 			args '-v /root/.gradle:/root/.gradle'
-		}
+		}s
 	}*/
 	stages {
 		stage('Build') {
