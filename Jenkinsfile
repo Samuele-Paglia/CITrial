@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	tools {
+		gradle "gradle:4.10.3"
+	}
 	/*
 	agent ('Gradle') {
 		docker {
