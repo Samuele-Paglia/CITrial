@@ -1,6 +1,6 @@
 node {
 	try {
-		environment {
+		withEnv {
 			tool name: 'gradle:4.10.3', type: 'gradle'
 		}
 		/*
@@ -9,11 +9,11 @@ node {
     	}
     	*/
 		stage('Build') {
-			sh '${gradle:4.10.3} gradle build'
+			sh 'gradle build'
 		}
 		stage('SonarQube Analysis') {
 			withSonarQubeEnv('sonarqube') {
-				sh '${gradle:4.10.3} gradle --info sonarqube'
+				sh 'gradle --info sonarqube'
 			}
 		}
 		stage("Quality Gate") {
