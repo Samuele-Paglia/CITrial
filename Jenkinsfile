@@ -32,15 +32,13 @@ node {
 		currentBuild.result = "FAILED"
 		throw e
 	} finally {
-		echo 'currentBuild.result'
-		notifyBuild(currentBuild.result)
+		notifyBuild('${currentBuild.result}')
 	}
 }
 
 
 def notifyBuild(def buildStatus) {
     buildStatus =  buildStatus ?: 'FAILURE'
-    //env.JOB_DISPLAYNAME = Jenkins.instance.getJob("${env.JOB_NAME}").displayName
     def colorMap = [ 'SUCCESS': 'good', 'UNSTABLE': 'warning', 'FAILURE': 'danger' ]
     def resultMap = [ 'SUCCESS': 'Success', 'UNSTABLE': 'Unstable', 'FAILURE': 'Failure' ]
 
