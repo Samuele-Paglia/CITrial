@@ -19,7 +19,7 @@ pipeline {
 		stage('SonarQube Analysis') {
 			steps {
 				withSonarQubeEnv('sonarqube') {
-					sh 'gradle sonarqube -Dsonar.host.url=http://sonarqube:9000 -Dsonar.verbose=true'
+					sh 'gradle sonarqube'//-Dsonar.host.url=http://sonarqube:9000 -Dsonar.verbose=true'
 				}
 			}
 		}
