@@ -39,11 +39,11 @@ node {
 
 def notifyBuild(def buildStatus) {
     buildStatus =  buildStatus ?: 'FAILURE'
-    env.JOB_DISPLAYNAME = Jenkins.instance.getJob("${env.JOB_NAME}").displayName
+    //env.JOB_DISPLAYNAME = Jenkins.instance.getJob("${env.JOB_NAME}").displayName
     def colorMap = [ 'SUCCESS': 'good', 'UNSTABLE': 'warning', 'FAILURE': 'danger' ]
     def resultMap = [ 'SUCCESS': 'Success', 'UNSTABLE': 'Unstable', 'FAILURE': 'Failure' ]
 
-    def subject = "${env.JOB_DISPLAYNAME} - #${env.BUILD_NUMBER}"
+    def subject = "${env.JOB_NAME} - #${env.BUILD_NUMBER}"
     def result = resultMap[buildStatus]
     def summary = "${subject} ${result} after ${currentBuild.durationString.replace(' and counting', '')} (<${env.BUILD_URL}|Details>)"
     def colorName = colorMap[buildStatus]
