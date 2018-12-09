@@ -1,17 +1,17 @@
 node {
 	try {
-		tool name: 'gradle:4.10.3', type: 'gradle'
+		def path = tool name: 'gradle:4.10.3', type: 'gradle'
 		/*
     	stage('Checkout SCM'){
         	git '/home/samu/GitHub/CITrial'
     	}
     	*/
 		stage('Build') {
-			sh 'gradle build'
+			sh '${path}/gradle build'
 		}
 		stage('SonarQube Analysis') {
 			withSonarQubeEnv('sonarqube') {
-				sh 'gradle --info sonarqube'
+				sh '${path}/gradle --info sonarqube'
 			}
 		}
 		stage("Quality Gate") {
