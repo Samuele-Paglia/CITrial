@@ -18,18 +18,19 @@ node {
 			}
 		}
 		stage("Quality Gate") {
+			currentBuild.result = 'SUCCESS'
 			timeout(time: 20, unit: 'MINUTES') {
 				def qg = waitForQualityGate()
-				if (qg.status!='OK' & qg.status!='WARN') {
+				if (qg.status != 'OK' & qg.status != 'WARN') {
 					error "Pipeline aborted due to quality gate failure: ${qg.status}"
-				} else if (qg.status=='WARN') {
-					currentBuild.result='UNSTABLE'
+				} else if (qg.status == 'WARN') {
+					currentBuild.result = 'UNSTABLE'
 					echo "The ${currentBuild.result} state is due to quality gate result: ${qg.status}"
 				}
 			}
 		}
 	} catch (e) {
-		currentBuild.result = "FAILED"
+		currentBuild.result = "FAILURE"
 		throw e
 	} finally {
 		echo "${currentBuild.result}"
