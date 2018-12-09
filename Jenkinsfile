@@ -35,7 +35,7 @@ pipeline {
 	}
 	post {
 		success {
-			slackSend (color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.durationString.replace(' and counting', '')}")
+			slackSend (color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Success after ${currentBuild.durationString.replace(' and counting', '')} <${env.BUILD_URL}|Details>")
 		}
 		unstable {
 			slackSend (color: 'warning', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Unstable after ${currentBuild.duration}")
