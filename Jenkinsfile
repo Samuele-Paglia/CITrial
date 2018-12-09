@@ -14,7 +14,7 @@ pipeline {
 		stage('SonarQube Analysis') {
 			steps {
 				withSonarQubeEnv('sonarqube') {
-					sh 'gradle sonarqube -Dsonar.host.url=http://192.168.0.10:9000 -Dsonar.verbose=true'
+					sh 'gradle sonarqube -Dsonar.host.url=http://$(boot2docker ip):9000 -Dsonar.verbose=true'
 				}
 			}
 		}
