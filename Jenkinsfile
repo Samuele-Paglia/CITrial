@@ -7,11 +7,11 @@ node {
     	}
     	*/
 		stage('Build') {
-			sh '${path}/gradle build'
+			sh '${path}/bin/gradle build'
 		}
 		stage('SonarQube Analysis') {
 			withSonarQubeEnv('sonarqube') {
-				sh '${path}/gradle --info sonarqube'
+				sh '${path}/bin/gradle --info sonarqube'
 			}
 		}
 		stage("Quality Gate") {
